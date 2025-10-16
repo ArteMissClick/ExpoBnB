@@ -15,6 +15,10 @@ export default function SandboxLayout() {
         name="navigation"
         options={{ headerShown: false }}
       />
+            <Stack.Screen
+        name="exosjeudi"
+        options={{ headerShown: false }}
+      />
     </Stack>
   );
 }

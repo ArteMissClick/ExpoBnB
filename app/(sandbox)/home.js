@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to ExpoBnB!</Text>
-      <Text style={styles.subtitle}>Your adventure starts here.</Text>
+      <Text style={styles.subtitle}>Navigation</Text>
       <Pressable
         onPress={() => router.push("/(sandbox)/navigation/drawer-basic")}
         style={styles.link}
@@ -32,6 +32,31 @@ export default function Home() {
       >
         <Text style={styles.linkText}>tabs-basic</Text>
       </Pressable>
+      <Text style={styles.subtitle}>Exos Jeudi</Text>
+      <Pressable
+        onPress={() => router.push("/(sandbox)/state/useState")}
+        style={styles.link}
+      >
+        <Text style={styles.linkText}>useState</Text>
+      </Pressable>
+      <Pressable
+        onPress={() => router.push("/(sandbox)/state/useEffect")}
+        style={styles.link}
+      >
+        <Text style={styles.linkText}>useEffect</Text>
+      </Pressable>
+      <Pressable
+        onPress={() => router.push("/(sandbox)/state/useContext")}
+        style={styles.link}
+      >
+        <Text style={styles.linkText}>useContext</Text>
+      </Pressable>
+      <Pressable
+        onPress={() => router.push("/(sandbox)/state/store")}
+        style={styles.link}
+      >
+        <Text style={styles.linkText}>store</Text>
+      </Pressable>
     </View>
   );
 }
@@ -50,6 +75,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   subtitle: {
+    marginTop: 20,
     fontSize: 18,
     color: "#666",
     marginBottom: 20,

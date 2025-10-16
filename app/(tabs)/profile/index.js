@@ -1,3 +1,4 @@
+import { Link } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function ProfileScreen() {
@@ -27,4 +28,20 @@ const styles = StyleSheet.create({
     color: "#4b5563",
     textAlign: "center",
   },
+  sandboxLink: {
+    marginTop: 24,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 12,
+    backgroundColor: "#2563eb",
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+  },
 });
+
+/*
+      <Link href="/(sandbox)/home" style={styles.sandboxLink}>
+        Accéder au Sandbox
+      </Link> 
+*/

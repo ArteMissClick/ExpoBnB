@@ -1,17 +1,10 @@
 import { useLocalSearchParams } from "expo-router";
 import { useMemo, useState } from "react";
-import {
-  Image,
-  Modal,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import data from "../../../../mockData";
+import ConfirmationModal from "./(modal)/modal";
 
 export default function ProductScreen() {
   const { id } = useLocalSearchParams();
@@ -27,19 +20,6 @@ export default function ProductScreen() {
     () => data.find((item) => item.id === numericId),
     [numericId]
   );
-
-  if (!listing) {
-    return (
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.emptyState}>
-          <Text style={styles.emptyTitle}>Logement introuvable</Text>
-          <Text style={styles.emptySubtitle}>
-            Le logement que vous recherchez n&apos;est plus disponible.
-          </Text>
-        </View>
-      </SafeAreaView>
-    );
-  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -74,27 +54,10 @@ export default function ProductScreen() {
         </Pressable>
       </View>
 
-      <Modal
-        animationType="fade"
-        transparent
+      <ConfirmationModal
         visible={isConfirmationVisible}
-        onRequestClose={() => setIsConfirmationVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>Réservation confirmée</Text>
-            <Text style={styles.modalMessage}>
-              Merci ! Nous vous avons envoyé un e-mail de confirmation.
-            </Text>
-            <Pressable
-              style={styles.modalCloseButton}
-              onPress={() => setIsConfirmationVisible(false)}
-            >
-              <Text style={styles.modalCloseText}>Fermer</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
+        onClose={() => setIsConfirmationVisible(false)}
+      />
     </SafeAreaView>
   );
 }
@@ -162,56 +125,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     color: "#fff",
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.4)",
-    justifyContent: "center",
-    padding: 24,
-  },
-  modalContainer: {
-    backgroundColor: "#fff",
-    borderRadius: 16,
-    padding: 24,
-    gap: 16,
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#111827",
-  },
-  modalMessage: {
-    fontSize: 15,
-    color: "#374151",
-    lineHeight: 22,
-  },
-  modalCloseButton: {
-    alignSelf: "flex-end",
-    backgroundColor: "#2563eb",
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    borderRadius: 8,
-  },
-  modalCloseText: {
-    color: "#fff",
-    fontSize: 15,
-    fontWeight: "600",
-  },
-  emptyState: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 24,
-  },
-  emptyTitle: {
-    fontSize: 22,
-    fontWeight: "700",
-    color: "#111827",
-  },
-  emptySubtitle: {
-    marginTop: 8,
-    fontSize: 15,
-    color: "#6b7280",
-    textAlign: "center",
   },
 });
