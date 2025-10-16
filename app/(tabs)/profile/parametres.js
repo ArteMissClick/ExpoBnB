@@ -2,20 +2,18 @@ import { StyleSheet, Text, View } from "react-native";
 
 export default function SettingsScreen() {
   return (
-    <View style={styles.container}>
+    <View style={styles.page}>
       <Text style={styles.title}>Parametres</Text>
-      <Text style={styles.subtitle}>
-        Configure ici les préférences liées à ton compte ExpoBnB.
-      </Text>
+      <Text style={styles.text}>Ici tu pourras regler ton compte plus tard.</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  page: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
+    alignItems: "center",
     padding: 24,
     backgroundColor: "#fff",
   },
@@ -24,9 +22,8 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginBottom: 12,
   },
-  subtitle: {
-    fontSize: 16,
-    color: "#4b5563",
+  text: {
+    color: "#555",
     textAlign: "center",
   },
 });

@@ -2,128 +2,114 @@ import { useLocalSearchParams } from "expo-router";
 import { useMemo, useState } from "react";
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import data from "../../../../mockData";
+import { useLocationsStore } from "../../../../store/storeLocations";
 import ConfirmationModal from "./(modal)/modal";
 
 export default function ProductScreen() {
   const { id } = useLocalSearchParams();
-  const [isConfirmationVisible, setIsConfirmationVisible] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const { locations } = useLocationsStore();
 
-  const numericId = useMemo(() => {
-    const rawId = Array.isArray(id) ? id[0] : id;
-    const parsed = Number(rawId);
-    return Number.isFinite(parsed) ? parsed : null;
-  }, [id]);
-
+  const listingId = Array.isArray(id) ? id[0] : id;
   const listing = useMemo(
-    () => data.find((item) => item.id === numericId),
-    [numericId]
+    () => locations.find((item) => String(item.id) === String(listingId)),
+    [locations, listingId]
   );
 
+  if (!listing) {
+    return (
+      <SafeAreaView style={styles.center}>
+        <Text style={styles.message}>Logement introuvable</Text>
+      </SafeAreaView>
+    );
+  }
+
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView
-        contentContainerStyle={styles.contentContainer}
-        showsVerticalScrollIndicator={false}
-      >
-        {listing.image ? (
-          <Image source={{ uri: listing.image }} style={styles.heroImage} />
-        ) : null}
-        <View style={styles.detailsContainer}>
+    <SafeAreaView style={styles.page}>
+      <ScrollView contentContainerStyle={styles.content}>
+        {listing.image ? <Image source={{ uri: listing.image }} style={styles.image} /> : null}
+        <View style={styles.box}>
           <Text style={styles.title}>{listing.title}</Text>
-          <Text style={styles.subtitle}>
-            {listing.city} • {listing.price} €/nuit
+          <Text style={styles.line}>
+            {listing.city} - {listing.price} EUR/nuit
           </Text>
-          {listing.description ? (
-            <Text style={styles.description}>{listing.description}</Text>
-          ) : null}
+          {listing.description ? <Text style={styles.text}>{listing.description}</Text> : null}
         </View>
       </ScrollView>
 
       <View style={styles.footer}>
-        <View>
-          <Text style={styles.footerPrice}>{listing.price} € / nuit</Text>
-          <Text style={styles.footerCaption}>Taxes et frais inclus</Text>
-        </View>
-        <Pressable
-          style={styles.bookButton}
-          onPress={() => setIsConfirmationVisible(true)}
-        >
-          <Text style={styles.bookButtonText}>Réserver</Text>
+        <Text style={styles.total}>{listing.price} EUR / nuit</Text>
+        <Pressable style={styles.button} onPress={() => setShowModal(true)}>
+          <Text style={styles.buttonText}>Reserver</Text>
         </Pressable>
       </View>
 
-      <ConfirmationModal
-        visible={isConfirmationVisible}
-        onClose={() => setIsConfirmationVisible(false)}
-      />
+      <ConfirmationModal visible={showModal} onClose={() => setShowModal(false)} />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
+  page: {
     flex: 1,
     backgroundColor: "#fff",
   },
-  contentContainer: {
-    paddingBottom: 160,
+  content: {
+    paddingBottom: 120,
   },
-  heroImage: {
+  image: {
     width: "100%",
-    height: 260,
+    height: 240,
+    backgroundColor: "#ddd",
   },
-  detailsContainer: {
-    padding: 24,
-    gap: 16,
+  box: {
+    padding: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "700",
-    color: "#111827",
+    marginBottom: 8,
   },
-  subtitle: {
-    fontSize: 16,
-    color: "#4b5563",
+  line: {
+    color: "#555",
+    marginBottom: 8,
   },
-  description: {
-    fontSize: 15,
-    color: "#374151",
-    lineHeight: 22,
+  text: {
+    color: "#333",
+    lineHeight: 20,
   },
   footer: {
     position: "absolute",
     left: 0,
     right: 0,
     bottom: 0,
-    paddingHorizontal: 24,
-    paddingVertical: 16,
-    borderTopWidth: 1,
-    borderTopColor: "#e5e7eb",
-    backgroundColor: "#ffffffee",
+    padding: 16,
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "space-between",
+    backgroundColor: "#fff",
+    borderTopWidth: 1,
+    borderTopColor: "#eee",
   },
-  footerPrice: {
-    fontSize: 20,
-    fontWeight: "700",
-    color: "#111827",
-  },
-  footerCaption: {
-    fontSize: 12,
-    color: "#6b7280",
-  },
-  bookButton: {
-    backgroundColor: "#2563eb",
-    paddingHorizontal: 24,
-    paddingVertical: 14,
-    borderRadius: 10,
-  },
-  bookButtonText: {
-    fontSize: 16,
+  total: {
+    fontSize: 18,
     fontWeight: "600",
+  },
+  button: {
+    backgroundColor: "#2563eb",
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 8,
+  },
+  buttonText: {
     color: "#fff",
+    fontWeight: "600",
+  },
+  center: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  message: {
+    fontSize: 16,
   },
 });

@@ -1,80 +1,92 @@
 import { useRouter } from "expo-router";
-import React from "react";
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
-const Cards = ({ data }) => {
+export default function Cards({ data, onSearch, searchTerm, maxPrice, onRefresh, refreshing }) {
   const router = useRouter();
 
-  const handlePress = (item) => {
-    router.push({
-      pathname: "/(tabs)/(explorer)/product/[id]",
-      params: { id: item.id },
-    });
+  const openDetails = (item) => {
+    router.push({ pathname: "/(tabs)/(explorer)/product/[id]", params: { id: String(item.id) } });
   };
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity style={styles.card} onPress={() => openDetails(item)}>
+      <Image source={{ uri: item.image }} style={styles.image} />
+      <Text style={styles.title}>{item.title}</Text>
+      <Text style={styles.caption}>
+        {item.city} - {item.price} EUR/nuit
+      </Text>
+      {item.rating ? <Text style={styles.caption}>Note: {item.rating} ({item.reviews} avis)</Text> : null}
+    </TouchableOpacity>
+  );
 
   return (
     <FlatList
       data={data}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => (
-        <TouchableOpacity
-          style={styles.userCard}
-          onPress={() => handlePress(item)}
-        >
-          <Image
-            source={{ uri: item.image }}
-            style={styles.cardImage}
-            resizeMode="cover"
+      keyExtractor={(item) => String(item.id)}
+      renderItem={renderItem}
+      ListHeaderComponent={
+        <View style={styles.search}>
+          <TextInput
+            style={styles.input}
+            value={searchTerm}
+            placeholder="Ville ou titre"
+            onChangeText={(text) => onSearch(text, maxPrice)}
           />
-          <Text style={styles.userName}>{item.title}</Text>
-          <Text style={styles.userAge}>
-            {item.city} • {item.price} €/nuit
-          </Text>
-        </TouchableOpacity>
-      )}
-      contentContainerStyle={styles.contentContainer}
-      showsVerticalScrollIndicator={false}
+          <TextInput
+            style={styles.input}
+            value={maxPrice}
+            placeholder="Prix max"
+            onChangeText={(value) => onSearch(searchTerm, value)}
+            keyboardType="numeric"
+          />
+        </View>
+      }
+      ListEmptyComponent={<Text style={styles.empty}>Aucun logement pour l'instant.</Text>}
+      contentContainerStyle={styles.list}
+      onRefresh={onRefresh}
+      refreshing={refreshing}
     />
   );
-};
+}
 
 const styles = StyleSheet.create({
-    userCard: {
-      backgroundColor: '#DDDDDD',
-      marginBottom: 15,
-      borderRadius: 12,
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.1,
-      shadowRadius: 3.84,
-      elevation: 5,
-      overflow: 'hidden',
-    },
-    cardImage: {
-      width: '100%',
-      height: 150,
-    },
-    userName: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      color: '#333',
-      marginBottom: 5,
-      paddingHorizontal: 15,
-      paddingTop: 12,
-    },
-    userAge: {
-      fontSize: 14,
-      color: '#666',
-      paddingHorizontal: 15,
-      paddingBottom: 15,
-    },
-    contentContainer: {
-      paddingHorizontal: 16,
-      paddingVertical: 16,
-    },
-  });
-
-export default Cards;
+  list: {
+    padding: 16,
+  },
+  search: {
+    marginBottom: 12,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 10,
+    backgroundColor: "#fff",
+    marginBottom: 8,
+  },
+  card: {
+    backgroundColor: "#eee",
+    borderRadius: 12,
+    overflow: "hidden",
+    marginBottom: 16,
+  },
+  image: {
+    height: 160,
+    backgroundColor: "#ddd",
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "600",
+    padding: 12,
+  },
+  caption: {
+    paddingHorizontal: 12,
+    paddingBottom: 8,
+    color: "#444",
+  },
+  empty: {
+    textAlign: "center",
+    color: "#555",
+    marginTop: 24,
+  },
+});
