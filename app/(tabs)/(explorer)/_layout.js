@@ -11,10 +11,9 @@ export default function ExplorerLayout() {
         }}
       />
       <Stack.Screen
-        name="(modals)"
+        name="product/[id]"
         options={{
-          presentation: "fullScreenModal",
-          headerShown: false,
+          title: "Détail du logement",
         }}
       />
     </Stack>

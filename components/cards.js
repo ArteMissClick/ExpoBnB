@@ -7,7 +7,7 @@ const Cards = ({ data }) => {
 
   const handlePress = (item) => {
     router.push({
-      pathname: "/(tabs)/(explorer)/(modals)/[id]",
+      pathname: "/(tabs)/(explorer)/product/[id]",
       params: { id: item.id },
     });
   };
@@ -74,104 +74,6 @@ const styles = StyleSheet.create({
     contentContainer: {
       paddingHorizontal: 16,
       paddingVertical: 16,
-    },
-    // Styles pour la modale
-    modalOverlay: {
-      flex: 1,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      justifyContent: 'flex-end',
-    },
-    modalContainer: {
-      backgroundColor: '#fff',
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      maxHeight: '90%',
-      minHeight: '70%',
-    },
-    modalContent: {
-      flex: 1,
-    },
-    modalImage: {
-      width: '100%',
-      height: 250,
-    },
-    modalDetails: {
-      padding: 20,
-    },
-    modalTitle: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      color: '#333',
-      marginBottom: 10,
-    },
-    modalLocation: {
-      fontSize: 16,
-      color: '#666',
-      marginBottom: 8,
-    },
-    modalPrice: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      color: '#FF6B6B',
-      marginBottom: 20,
-    },
-    descriptionSection: {
-      marginBottom: 20,
-    },
-    sectionTitle: {
-      fontSize: 18,
-      fontWeight: 'bold',
-      color: '#333',
-      marginBottom: 10,
-    },
-    description: {
-      fontSize: 16,
-      color: '#666',
-      lineHeight: 24,
-    },
-    amenitiesSection: {
-      marginBottom: 20,
-    },
-    amenitiesList: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-    },
-    amenity: {
-      fontSize: 14,
-      color: '#4CAF50',
-      marginRight: 15,
-      marginBottom: 5,
-    },
-    modalFooter: {
-      flexDirection: 'row',
-      padding: 20,
-      borderTopWidth: 1,
-      borderTopColor: '#eee',
-      gap: 10,
-    },
-    closeButton: {
-      flex: 1,
-      backgroundColor: '#f5f5f5',
-      paddingVertical: 15,
-      borderRadius: 8,
-      alignItems: 'center',
-    },
-    closeButtonText: {
-      fontSize: 16,
-      fontWeight: '600',
-      color: '#666',
-    },
-    bookButton: {
-      flex: 1,
-      backgroundColor: '#FF6B6B',
-      paddingVertical: 15,
-      borderRadius: 8,
-      alignItems: 'center',
-    },
-    bookButtonText: {
-      fontSize: 16,
-      fontWeight: '600',
-      color: '#fff',
     },
   });
 
